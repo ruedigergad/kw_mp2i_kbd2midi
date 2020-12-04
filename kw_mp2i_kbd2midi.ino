@@ -1,4 +1,4 @@
-#define NOT_MUTE 36
+#define NOT_MUTE 2
 
 void setup() {
   Serial.begin(9600);
@@ -9,50 +9,43 @@ void setup() {
   digitalWrite(NOT_MUTE, HIGH);
 
   // Left "half" of keyboard (Bass).
-  for (int i = 23; i <= 31; i++) {
+  for (int i = 23; i <= 33; i++) {
     pinMode(i, OUTPUT);
+    digitalWrite(i, LOW);
   }
+  /*
   for (int i = 39; i <= 53; i += 2) {
     pinMode(i, INPUT);
   }
+  */
 }
 
 void loop() {
-  /*
-  digitalWrite(23, LOW);
-  int x = digitalRead(39);
-  if (x == 0) {
-    digitalWrite(LED_BUILTIN, HIGH);
-  } else {
-    digitalWrite(LED_BUILTIN, LOW);
-  }
-  digitalWrite(23, HIGH);
-
-  delay(100);
-  */
-  
-  for (int i = 23; i <= 31; i++) {
+  for (int i = 23; i <= 33; i++) {
     digitalWrite(i, HIGH);
-    //delay(1);
-    byte key_press = 0;
-    for (byte j = 0; j <= 7; j++) {
-      byte tmp = digitalRead(39 + (j * 2));
-      key_press += (tmp << j);
-    }
-    digitalWrite(i, LOW);
 
     Serial.print(i);
-    Serial.print(" - ");
-    Serial.print(key_press);
-    Serial.print("\n");
+    Serial.print(") B:");
+    byte key_press_b = 0;
+    for (byte j = 0; j <= 7; j++) {
+      int raw = analogRead(54 + j);
+      byte tmp = raw > 900 ? 1 : 0;
+      key_press_b += (tmp << j);
+    }
+    Serial.print(key_press_b);
+    
+    Serial.print(" T:");
+    byte key_press_t = 0;
+    for (byte j = 0; j <= 7; j++) {
+      int raw = analogRead(62 + j);
+      byte tmp = raw > 900 ? 1 : 0;
+      key_press_t += (tmp << j);
+    }
+    Serial.print(key_press_t);
+    
+    digitalWrite(i, LOW);
+
+    Serial.print("   ");
   }
   Serial.print("\n");
-  delay(1000);
-
-  /*
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(500);
-  */
 }
