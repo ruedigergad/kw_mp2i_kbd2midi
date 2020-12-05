@@ -34,10 +34,11 @@ void loop() {
       byte tmp = raw > 900 ? 1 : 0;
       key_press_b += (tmp << j);
     }
+    digitalWrite(line, LOW);
+    delay(3);
+    
     Serial.print(key_press_b);
     Serial.print(" ");
-    
-    digitalWrite(line, LOW);
   }
 
   Serial.print("    T: ");
@@ -53,10 +54,11 @@ void loop() {
       byte tmp = raw > 900 ? 1 : 0;
       key_press_b += (tmp << j);
     }
+    digitalWrite(line, LOW);
+    delay(3);
+    
     Serial.print(key_press_b);
     Serial.print(" ");
-    
-    digitalWrite(line, LOW);
   }
   
   Serial.print("\n");
