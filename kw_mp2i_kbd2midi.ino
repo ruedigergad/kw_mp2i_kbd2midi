@@ -70,12 +70,12 @@ void loop() {
       byte note_number = (j + 1) + (i * 8);
       byte note_value = note_number + NOTE_OFFSET;
       if (raw != 0) {
-        if (notes_pre_press[note_number] == 0) {
-          notes_pre_press[note_number] = millis();
+        if (notes_pre_press[note_value] == 0) {
+          notes_pre_press[note_value] = millis();
         }
       } else {
-        if (notes_pre_press[note_number] != 0) {
-          notes_pre_press[note_number] = 0;
+        if (notes_pre_press[note_value] != 0) {
+          notes_pre_press[note_value] = 0;
         }
       }
     }
@@ -91,11 +91,11 @@ void loop() {
       byte note_number = (j + 1) + (i * 8);
       byte note_value = note_number + NOTE_OFFSET;
       if (raw != 0) {
-        if (notes_playing[note_number] == 0) {
+        if (notes_playing[note_value] == 0) {
           byte velocity = 0;
-          if (notes_pre_press[note_number] != 0) {
+          if (notes_pre_press[note_value] != 0) {
             unsigned long now = millis();
-            unsigned long press_time_delta = now - notes_pre_press[note_number];
+            unsigned long press_time_delta = now - notes_pre_press[note_value];
             long tmp_velocity = 127 - press_time_delta;
             if (tmp_velocity < 0) tmp_velocity = 0;
             if (tmp_velocity > 127) tmp_velocity = 127;
@@ -106,16 +106,16 @@ void loop() {
           
           if (! PRINT && velocity > 0) {
             MIDI.sendNoteOn(note_value, velocity, 1);
-            notes_playing[note_number] = velocity;
+            notes_playing[note_value] = velocity;
           }
         }
       } else {
-        if (notes_playing[note_number] != 0) {
+        if (notes_playing[note_value] != 0) {
           if (! PRINT) {
-            byte velocity = notes_playing[note_number];
+            byte velocity = notes_playing[note_value];
             MIDI.sendNoteOff(note_value, velocity, 1);
-            notes_playing[note_number] = 0;
-            notes_pre_press[note_number] = 0;
+            notes_playing[note_value] = 0;
+            notes_pre_press[note_value] = 0;
           }
         }
       }
@@ -123,31 +123,66 @@ void loop() {
     digitalWrite(line_pressed_full, HIGH);
   }
 
-  if (PRINT) {
-    Serial.print("   T: ");
-  }
-  for (int i = 0; i <= 11; i++) {
-    int line = 22 + (2 * i);
-    digitalWrite(line, LOW);
-
-    if (PRINT) {
-      Serial.print(i);
-      Serial.print(") ");
-    }
-    byte key_press_t = 0;
+  for (int i = 0; i <= 5; i++) {
+    byte line_press_started = 24 + (2 * 2 * i);
+    digitalWrite(line_press_started, LOW);
+    
     for (byte j = 0; j <= 7; j++) {
       int raw = !digitalRead(3 + j);
-      key_press_t += (raw << j);
-    }
-    digitalWrite(line, HIGH);
 
-    if (PRINT) {
-      Serial.print(key_press_t);
-      Serial.print(" ");
+      byte note_number = (j + 1) + (i * 8);
+      byte note_value = note_number + NOTE_OFFSET_TREBLE;
+      if (raw != 0) {
+        if (notes_pre_press[note_value] == 0) {
+          notes_pre_press[note_value] = millis();
+        }
+      } else {
+        if (notes_pre_press[note_value] != 0) {
+          notes_pre_press[note_value] = 0;
+        }
+      }
     }
-  }
-  
-  if (PRINT) {
-    Serial.print("\n");
+    digitalWrite(line_press_started, HIGH);
+
+
+    byte line_pressed_full = 22 + (2 * 2 * i);
+    digitalWrite(line_pressed_full, LOW);
+
+    for (byte j = 0; j <= 7; j++) {
+      int raw = !digitalRead(3 + j);
+
+      byte note_number = (j + 1) + (i * 8);
+      byte note_value = note_number + NOTE_OFFSET_TREBLE;
+      if (raw != 0) {
+        if (notes_playing[note_value] == 0) {
+          byte velocity = 0;
+          if (notes_pre_press[note_value] != 0) {
+            unsigned long now = millis();
+            unsigned long press_time_delta = now - notes_pre_press[note_value];
+            long tmp_velocity = 127 - press_time_delta;
+            if (tmp_velocity < 0) tmp_velocity = 0;
+            if (tmp_velocity > 127) tmp_velocity = 127;
+            velocity = tmp_velocity;
+          } else {
+            velocity = 127;
+          }
+          
+          if (! PRINT && velocity > 0) {
+            MIDI.sendNoteOn(note_value, velocity, 1);
+            notes_playing[note_value] = velocity;
+          }
+        }
+      } else {
+        if (notes_playing[note_value] != 0) {
+          if (! PRINT) {
+            byte velocity = notes_playing[note_value];
+            MIDI.sendNoteOff(note_value, velocity, 1);
+            notes_playing[note_value] = 0;
+            notes_pre_press[note_value] = 0;
+          }
+        }
+      }
+    }
+    digitalWrite(line_pressed_full, HIGH);
   }
 }
