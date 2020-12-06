@@ -61,7 +61,7 @@ byte notes_playing[128];
 void loop() {
 
   for (int i = 0; i <= 4; i++) {
-    byte line_press_started = 23 + (2 * 2 * (i + 1));
+    byte line_press_started = 25 + (2 * 2 * i);
     digitalWrite(line_press_started, LOW);
     
     for (byte j = 0; j <= 7; j++) {
@@ -74,7 +74,7 @@ void loop() {
           notes_pre_press[note_number] = millis();
         }
       } else {
-        if (notes_pre_press[note_number] == 0) {
+        if (notes_pre_press[note_number] != 0) {
           notes_pre_press[note_number] = 0;
         }
       }
@@ -92,12 +92,16 @@ void loop() {
       byte note_value = note_number + NOTE_OFFSET;
       if (raw != 0) {
         if (notes_playing[note_number] == 0) {
-          
-          unsigned long now = millis();
-          unsigned long press_time_delta = now - notes_pre_press[note_number];
-          byte velocity = 127 - press_time_delta;
-          if (velocity < 0 || velocity > 127) {
-            velocity = 0;
+          byte velocity = 0;
+          if (notes_pre_press[note_number] != 0) {
+            unsigned long now = millis();
+            unsigned long press_time_delta = now - notes_pre_press[note_number];
+            long tmp_velocity = 127 - press_time_delta;
+            if (tmp_velocity < 0) tmp_velocity = 0;
+            if (tmp_velocity > 127) tmp_velocity = 127;
+            velocity = tmp_velocity;
+          } else {
+            velocity = 127;
           }
           
           if (! PRINT && velocity > 0) {
@@ -111,6 +115,7 @@ void loop() {
             byte velocity = notes_playing[note_number];
             MIDI.sendNoteOff(note_value, velocity, 1);
             notes_playing[note_number] = 0;
+            notes_pre_press[note_number] = 0;
           }
         }
       }
