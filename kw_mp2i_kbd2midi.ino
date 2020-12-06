@@ -2,8 +2,8 @@
 
 #define NOT_MUTE 53
 #define PRINT false
-#define NOTE_OFFSET 21
-#define NOTE_OFFSET_TREBLE 61
+#define NOTE_OFFSET 20
+#define NOTE_OFFSET_TREBLE 60
 
 /*
 struct MySettings : public midi::DefaultSettings
