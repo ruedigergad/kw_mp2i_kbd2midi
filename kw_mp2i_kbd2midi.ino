@@ -3,6 +3,7 @@
 #define NOT_MUTE 53
 #define PRINT false
 #define NOTE_OFFSET 21
+#define NOTE_OFFSET_TREBLE 61
 
 /*
 struct MySettings : public midi::DefaultSettings
@@ -16,6 +17,14 @@ struct MySettings : public midi::DefaultSettings
 //MIDI_CREATE_CUSTOM_INSTANCE(HardwareSerial, Serial3, MIDI, MySettings);
 //MIDI_CREATE_INSTANCE(HardwareSerial, Serial3, MIDI);
 MIDI_CREATE_DEFAULT_INSTANCE();
+
+/*
+ * Due to problems with the MIDI connection, we use Serial to MIDI, for now:
+ * https://github.com/cjbarnes18/ttymidi
+ * 
+ * ./ttymidi -s /dev/ttyACM1 -v
+ * aconnect 131:0 128:0
+ */
 
 void setup() {
   if (! PRINT) {
@@ -89,9 +98,6 @@ void loop() {
 
     if (PRINT) {
       Serial.print(key_press_full_b);
-    }
-    
-    if (PRINT) {
       Serial.print(" ");
     }
   }
