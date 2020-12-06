@@ -56,6 +56,7 @@ void setup() {
 
 unsigned long notes_pre_press[128];
 byte notes_playing[128];
+byte half_tones[] = {0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1};
 
 void loop() {
 
@@ -118,7 +119,15 @@ void loop() {
               unsigned long now = millis();
               double press_time_delta = now - notes_pre_press[note_value];
               if (press_time_delta == 0) press_time_delta = 1;
-              double x = 6 / press_time_delta;
+
+              byte half_tone = half_tones[(note_number - 1) % 12];
+              double x = 0;
+              if (half_tone == 1) {
+                x = 3 / press_time_delta;
+              } else {
+                x = 6 / press_time_delta;
+              }
+              
               long tmp_velocity = 127 * x;
               if (tmp_velocity < 0) tmp_velocity = 0;
               if (tmp_velocity > 127) tmp_velocity = 127;
@@ -158,7 +167,15 @@ void loop() {
             unsigned long now = millis();
             double press_time_delta = now - notes_pre_press[note_value];
             if (press_time_delta == 0) press_time_delta = 1;
-            double x = 6 / press_time_delta;
+            
+            byte half_tone = half_tones[(note_number + 39) % 12];
+            double x = 0;
+            if (half_tone == 1) {
+              x = 3 / press_time_delta;
+            } else {
+              x = 6 / press_time_delta;
+            }
+              
             long tmp_velocity = 127 * x;
             if (tmp_velocity < 0) tmp_velocity = 0;
             if (tmp_velocity > 127) tmp_velocity = 127;
