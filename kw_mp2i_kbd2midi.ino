@@ -46,6 +46,8 @@ void setup() {
   }
 }
 
+byte notes_playing[128];
+
 void loop() {
   if (PRINT) {
     Serial.print("B: ");
@@ -65,13 +67,21 @@ void loop() {
       int raw = !digitalRead(3 + j);
       key_press_full_b += (raw << j);
 
+      byte note_number = (j + 1) + (i * 8);
+      byte note_value = note_number + NOTE_OFFSET;
       if (raw != 0) {
-        byte note = (j + 1) + (i * 8) + NOTE_OFFSET;
-
-        if (! PRINT) {
-          MIDI.sendNoteOn(note, 127, 1);
-          delay(10);
-          MIDI.sendNoteOff(note, 127, 1);
+        if (notes_playing[note_number] == 0) {
+          if (! PRINT) {
+            MIDI.sendNoteOn(note_value, 127, 1);
+            notes_playing[note_number] = 1;
+          }
+        }
+      } else {
+        if (notes_playing[note_number] != 0) {
+          if (! PRINT) {
+            MIDI.sendNoteOff(note_value, 127, 1);
+            notes_playing[note_number] = 0;
+          }
         }
       }
     }
