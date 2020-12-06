@@ -1,6 +1,7 @@
 #include <MIDI.h>
 
 #define NOT_MUTE 53
+#define PRINT false
 
 /*
 struct MySettings : public midi::DefaultSettings
@@ -16,8 +17,12 @@ struct MySettings : public midi::DefaultSettings
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
-  MIDI.begin(MIDI_CHANNEL_OMNI);
-  Serial.begin(115200);
+  if (! PRINT) {
+    MIDI.begin(MIDI_CHANNEL_OMNI);
+    Serial.begin(115200);
+  } else {
+    Serial.begin(9600);
+  }
   
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -41,51 +46,66 @@ void setup() {
 }
 
 void loop() {
-  //MIDI.sendActiveSensing();
-  //Serial.print("B: ");
+  if (PRINT) {
+    Serial.print("B: ");
+  }
   for (int i = 0; i <= 9; i++) {
     int line = 23 + (2 * i);
     digitalWrite(line, LOW);
 
-    //Serial.print(i);
-    //Serial.print(") ");
+    if (PRINT) {
+      Serial.print(i);
+      Serial.print(") ");
+    }
     byte key_press_b = 0;
     for (byte j = 0; j <= 7; j++) {
       int raw = !digitalRead(3 + j);
       key_press_b += (raw << j);
     }
     digitalWrite(line, HIGH);
-    
-    //Serial.print(key_press_b);
 
-    if (key_press_b != 0) {
+    if (PRINT) {
+      Serial.print(key_press_b);
+    }
+    
+    if (! PRINT and key_press_b != 0) {
       MIDI.sendNoteOn(42, 127, 1);
       delay(10);
       MIDI.sendNoteOff(42, 127, 1);
       //delay(1000);
     }
     
-    //Serial.print(" ");
+    if (PRINT) {
+      Serial.print(" ");
+    }
   }
 
-  //Serial.print("   T: ");
+  if (PRINT) {
+    Serial.print("   T: ");
+  }
   for (int i = 0; i <= 11; i++) {
     int line = 22 + (2 * i);
     digitalWrite(line, LOW);
 
-    //Serial.print(i);
-    //Serial.print(") ");
+    if (PRINT) {
+      Serial.print(i);
+      Serial.print(") ");
+    }
     byte key_press_t = 0;
     for (byte j = 0; j <= 7; j++) {
       int raw = !digitalRead(3 + j);
       key_press_t += (raw << j);
     }
     digitalWrite(line, HIGH);
-    
-    //Serial.print(key_press_t);
-    //Serial.print(" ");
+
+    if (PRINT) {
+      Serial.print(key_press_t);
+      Serial.print(" ");
+    }
   }
   
-  //Serial.print("\n");
+  if (PRINT) {
+    Serial.print("\n");
+  }
   delay(100);
 }
