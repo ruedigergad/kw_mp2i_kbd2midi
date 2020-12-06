@@ -116,8 +116,10 @@ void loop() {
             byte velocity = 0;
             if (notes_pre_press[note_value] != 0) {
               unsigned long now = millis();
-              unsigned long press_time_delta = now - notes_pre_press[note_value];
-              long tmp_velocity = 127 - press_time_delta;
+              double press_time_delta = now - notes_pre_press[note_value];
+              if (press_time_delta == 0) press_time_delta = 1;
+              double x = 6 / press_time_delta;
+              long tmp_velocity = 127 * x;
               if (tmp_velocity < 0) tmp_velocity = 0;
               if (tmp_velocity > 127) tmp_velocity = 127;
               velocity = tmp_velocity;
@@ -154,8 +156,10 @@ void loop() {
           byte velocity = 0;
           if (notes_pre_press[note_value] != 0) {
             unsigned long now = millis();
-            unsigned long press_time_delta = now - notes_pre_press[note_value];
-            long tmp_velocity = 127 - press_time_delta;
+            double press_time_delta = now - notes_pre_press[note_value];
+            if (press_time_delta == 0) press_time_delta = 1;
+            double x = 6 / press_time_delta;
+            long tmp_velocity = 127 * x;
             if (tmp_velocity < 0) tmp_velocity = 0;
             if (tmp_velocity > 127) tmp_velocity = 127;
             velocity = tmp_velocity;
