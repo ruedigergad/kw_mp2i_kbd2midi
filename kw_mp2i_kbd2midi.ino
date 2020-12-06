@@ -2,6 +2,7 @@
 
 #define NOT_MUTE 53
 #define PRINT false
+#define NOTE_OFFSET 21
 
 /*
 struct MySettings : public midi::DefaultSettings
@@ -49,30 +50,35 @@ void loop() {
   if (PRINT) {
     Serial.print("B: ");
   }
-  for (int i = 0; i <= 9; i++) {
-    int line = 23 + (2 * i);
-    digitalWrite(line, LOW);
-
+  for (int i = 0; i <= 4; i++) {
+    int line_press_started = 23 + (2 * 2 * (i + 1));
+    int line_pressed_full = 23 + (2 * 2 * i);
+    
     if (PRINT) {
       Serial.print(i);
       Serial.print(") ");
     }
-    byte key_press_b = 0;
+
+    digitalWrite(line_pressed_full, LOW);
+    byte key_press_full_b = 0;
     for (byte j = 0; j <= 7; j++) {
       int raw = !digitalRead(3 + j);
-      key_press_b += (raw << j);
+      key_press_full_b += (raw << j);
+
+      if (raw != 0) {
+        byte note = (j + 1) + (i * 8) + NOTE_OFFSET;
+
+        if (! PRINT) {
+          MIDI.sendNoteOn(note, 127, 1);
+          delay(10);
+          MIDI.sendNoteOff(note, 127, 1);
+        }
+      }
     }
-    digitalWrite(line, HIGH);
+    digitalWrite(line_pressed_full, HIGH);
 
     if (PRINT) {
-      Serial.print(key_press_b);
-    }
-    
-    if (! PRINT and key_press_b != 0) {
-      MIDI.sendNoteOn(42, 127, 1);
-      delay(10);
-      MIDI.sendNoteOff(42, 127, 1);
-      //delay(1000);
+      Serial.print(key_press_full_b);
     }
     
     if (PRINT) {
