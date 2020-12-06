@@ -51,12 +51,18 @@ void setup() {
   // Left "Right" of keyboard (Treble).
   for (int i = 23; i <= 37; i += 2) {
     pinMode(i, INPUT_PULLUP);
-  }  
+  }
+
+  // Pedals
+  for (int i = 50; i <= 52; i++) {
+    pinMode(i, INPUT_PULLUP);
+  }
 }
 
 unsigned long notes_pre_press[128];
 byte notes_playing[128];
 byte half_tones[] = {0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1};
+byte pedals[3];
 
 void loop() {
 
@@ -202,5 +208,23 @@ void loop() {
     }
 
     digitalWrite(line_pressed_full, HIGH);
+  }
+
+  // Pedals
+  for (int i = 0; i <= 2; i++) {
+    int raw = !digitalRead(50 + i);
+
+    int x = i < 2 ? 0 : 1;
+    if (raw != 0) {
+      if (pedals[i] == 0) {
+        MIDI.sendControlChange((67 - i) - x, 127, 1);
+        pedals[i] = 1;
+      }
+    } else {
+      if (pedals[i] != 0) {
+        MIDI.sendControlChange((67 - i) - x, 0, 1);
+        pedals[i] = 0;
+      }
+    }
   }
 }
