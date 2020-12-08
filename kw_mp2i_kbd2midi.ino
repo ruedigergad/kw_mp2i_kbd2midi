@@ -1,5 +1,20 @@
 #include <MIDI.h>
 
+#define PANEL_SENSE 53
+#define PANEL_DRIVE 52
+#define PANEL_COLA 51
+#define PANEL_COLD 50
+#define PANEL_COLC 49
+#define PANEL_COLB 48
+#define PANEL_ROW7 47
+#define PANEL_ROW6 46
+#define PANEL_ROW5 45
+#define PANEL_ROW4 44
+#define PANEL_ROW3 43
+#define PANEL_ROW2 42
+#define PANEL_ROW1 41
+#define PANEL_ROW0 40
+
 #define PEDAL_REF A13
 #define NOT_MUTE A14
 #define PRINT false
