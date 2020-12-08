@@ -256,7 +256,7 @@ void loop() {
     digitalWrite(pedals[i], LOW);
 
     int x = i < 2 ? 0 : 1;
-    if (raw < 1) {
+    if (raw > 1020) {
       if (pedals_state[i] == 0) {
         MIDI.sendControlChange((67 - i) - x, 127, 1);
         pedals_state[i] = 1;
