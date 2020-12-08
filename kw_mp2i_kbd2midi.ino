@@ -1,6 +1,7 @@
 #include <MIDI.h>
 
-#define NOT_MUTE 53
+#define PEDAL_REF A13
+#define NOT_MUTE A14
 #define PRINT false
 #define NOTE_OFFSET 20
 #define NOTE_OFFSET_TREBLE 60
@@ -26,6 +27,8 @@ MIDI_CREATE_DEFAULT_INSTANCE();
  * aconnect 131:0 128:0
  */
 
+int pedals[] = {A10, A11, A12};
+
 void setup() {
   if (! PRINT) {
     MIDI.begin(MIDI_CHANNEL_OMNI);
@@ -39,6 +42,9 @@ void setup() {
   pinMode(NOT_MUTE, OUTPUT);
   digitalWrite(NOT_MUTE, HIGH);
 
+  pinMode(PEDAL_REF, OUTPUT);
+  digitalWrite(PEDAL_REF, LOW);
+  
   for (int i = 2; i <= 13; i++) {
     pinMode(i, OUTPUT);
     digitalWrite(i, HIGH);
@@ -54,15 +60,15 @@ void setup() {
   }
 
   // Pedals
-  for (int i = 50; i <= 52; i++) {
-    pinMode(i, INPUT_PULLUP);
+  for (int i = 0; i <= 2; i++) {
+    pinMode(pedals[i], INPUT_PULLUP);
   }
 }
 
 unsigned long notes_pre_press[128];
 byte notes_playing[128];
 byte half_tones[] = {0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1};
-byte pedals[3];
+byte pedals_state[3];
 
 void loop() {
 
@@ -212,18 +218,18 @@ void loop() {
 
   // Pedals
   for (int i = 0; i <= 2; i++) {
-    int raw = !digitalRead(50 + i);
+    int raw = !digitalRead(pedals[i]);
 
     int x = i < 2 ? 0 : 1;
     if (raw != 0) {
-      if (pedals[i] == 0) {
+      if (pedals_state[i] == 0) {
         MIDI.sendControlChange((67 - i) - x, 127, 1);
-        pedals[i] = 1;
+        pedals_state[i] = 1;
       }
     } else {
-      if (pedals[i] != 0) {
+      if (pedals_state[i] != 0) {
         MIDI.sendControlChange((67 - i) - x, 0, 1);
-        pedals[i] = 0;
+        pedals_state[i] = 0;
       }
     }
   }
