@@ -42,7 +42,7 @@ MIDI_CREATE_DEFAULT_INSTANCE();
  * aconnect 131:0 128:0
  */
 
-int pedals[] = {A10, A11, A12};
+int pedals[] = {A0, A4, A8};
 
 void setup() {
   if (! PRINT) {
@@ -77,6 +77,25 @@ void setup() {
     pinMode(pedals[i], OUTPUT);
     digitalWrite(pedals[i], LOW);
   }
+
+  // Panel
+  for (int i = PANEL_ROW1; i <= PANEL_SENSE; i++) {
+    pinMode(i, OUTPUT);
+    digitalWrite(i, LOW);
+  }
+  //digitalWrite(PANEL_DRIVE, HIGH);
+  //digitalWrite(PANEL_COLA, HIGH);
+  //digitalWrite(PANEL_COLB, HIGH);
+  //digitalWrite(PANEL_COLC, HIGH);
+  //digitalWrite(PANEL_COLD, HIGH);
+  //digitalWrite(PANEL_ROW0, HIGH);
+  //digitalWrite(PANEL_ROW1, HIGH);
+  //digitalWrite(PANEL_ROW2, HIGH);
+  //digitalWrite(PANEL_ROW3, HIGH);
+  //digitalWrite(PANEL_ROW4, HIGH);
+  //digitalWrite(PANEL_ROW5, HIGH);
+  //digitalWrite(PANEL_ROW6, HIGH);
+  //digitalWrite(PANEL_ROW7, HIGH);
 }
 
 unsigned long notes_pre_press[128];
@@ -237,7 +256,7 @@ void loop() {
     digitalWrite(pedals[i], LOW);
 
     int x = i < 2 ? 0 : 1;
-    if (raw < 100) {
+    if (raw < 1) {
       if (pedals_state[i] == 0) {
         MIDI.sendControlChange((67 - i) - x, 127, 1);
         pedals_state[i] = 1;
