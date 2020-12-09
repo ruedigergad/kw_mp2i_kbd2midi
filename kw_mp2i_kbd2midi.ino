@@ -72,11 +72,14 @@ void setup() {
   }
 
   // Pedals
-  //pinMode(PEDAL_REF, INPUT);
+  pinMode(PEDAL_REF, OUTPUT);
+  digitalWrite(PEDAL_REF, HIGH);
+  /*
   for (int i = 0; i <= 2; i++) {
     pinMode(pedals[i], OUTPUT);
     digitalWrite(pedals[i], HIGH);
   }
+  */
 
   // Panel
   for (int i = PANEL_ROW1; i <= PANEL_SENSE; i++) {
@@ -131,6 +134,7 @@ void setup() {
 unsigned long notes_pre_press[128];
 byte notes_playing[128];
 byte half_tones[] = {0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1};
+byte pedal_read_idx = 0;
 byte pedals_state[3];
 
 void loop() {
@@ -280,23 +284,19 @@ void loop() {
   }
 
   // Pedals
-  for (int i = 0; i <= 2; i++) {
-    digitalWrite(pedals[i], HIGH);
-    int raw = analogRead(PEDAL_REF);
-    digitalWrite(pedals[i], LOW);
-
-    int x = i < 2 ? 0 : 1;
-    if (raw < 1) {
-      if (pedals_state[i] == 0) {
-        MIDI.sendControlChange((67 - i) - x, 127, 1);
-        pedals_state[i] = 1;
-      }
-    } else {
-      if (pedals_state[i] != 0) {
-        MIDI.sendControlChange((67 - i) - x, 0, 1);
-        pedals_state[i] = 0;
-      }
+  int raw = analogRead(pedals[pedal_read_idx]);
+  
+  int x = pedal_read_idx < 2 ? 0 : 1;
+  if (raw > 1020) {
+    if (pedals_state[pedal_read_idx] == 0) {
+      MIDI.sendControlChange((67 - pedal_read_idx) - x, 127, 1);
+      pedals_state[pedal_read_idx] = 1;
+    }
+  } else {
+    if (pedals_state[pedal_read_idx] != 0) {
+      MIDI.sendControlChange((67 - pedal_read_idx) - x, 0, 1);
+      pedals_state[pedal_read_idx] = 0;
     }
   }
-
+  pedal_read_idx = pedal_read_idx == 2 ? 0 : pedal_read_idx + 1;
 }
