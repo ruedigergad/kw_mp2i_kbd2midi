@@ -310,65 +310,34 @@ void loop() {
   panel_write_idx++;
   switch(panel_write_idx) {
    case 1:
-      digitalWrite(PANEL_DRIVE, HIGH);
-      digitalWrite(PANEL_COLD, LOW);
-      digitalWrite(PANEL_ROW0, HIGH);
-      digitalWrite(PANEL_ROW1, LOW);
-      digitalWrite(PANEL_ROW2, LOW);
-      digitalWrite(PANEL_ROW3, HIGH);
-      digitalWrite(PANEL_ROW4, LOW);
-      digitalWrite(PANEL_ROW5, LOW);
-      digitalWrite(PANEL_ROW6, LOW);
-      digitalWrite(PANEL_ROW7, LOW);
-      digitalWrite(PANEL_DRIVE, LOW);
+      write_panel(0b00001101, 0b00001001);
       break;
    case 5:
-      digitalWrite(PANEL_DRIVE, HIGH);
-      digitalWrite(PANEL_COLA, LOW);
-      digitalWrite(PANEL_COLB, LOW);
-      digitalWrite(PANEL_COLC, LOW);
-      digitalWrite(PANEL_ROW0, LOW);
-      digitalWrite(PANEL_ROW1, LOW);
-      digitalWrite(PANEL_ROW2, LOW);
-      digitalWrite(PANEL_ROW3, LOW);
-      digitalWrite(PANEL_ROW4, LOW);
-      digitalWrite(PANEL_ROW5, LOW);
-      digitalWrite(PANEL_ROW6, HIGH);
-      digitalWrite(PANEL_ROW7, LOW);
-      digitalWrite(PANEL_DRIVE, LOW);
+      write_panel(0b00000010, 0b01000000);
       break;
    case 9:
-      digitalWrite(PANEL_DRIVE, HIGH);
-      digitalWrite(PANEL_COLB, LOW);
-      digitalWrite(PANEL_COLC, LOW);
-      digitalWrite(PANEL_ROW0, HIGH);
-      digitalWrite(PANEL_ROW1, HIGH);
-      digitalWrite(PANEL_ROW2, HIGH);
-      digitalWrite(PANEL_ROW3, HIGH);
-      digitalWrite(PANEL_ROW4, LOW);
-      digitalWrite(PANEL_ROW5, LOW);
-      digitalWrite(PANEL_ROW6, LOW);
-      digitalWrite(PANEL_ROW7, LOW);
-      digitalWrite(PANEL_DRIVE, LOW);
+      write_panel(0b00000011, 0b00001111);
       break;
    case 13:
-      digitalWrite(PANEL_DRIVE, HIGH);
-      digitalWrite(PANEL_COLA, LOW);
-      digitalWrite(PANEL_COLB, LOW);
-      digitalWrite(PANEL_COLC, LOW);
-      digitalWrite(PANEL_COLD, LOW);
-      digitalWrite(PANEL_ROW0, HIGH);
-      digitalWrite(PANEL_ROW1, LOW);
-      digitalWrite(PANEL_ROW2, LOW);
-      digitalWrite(PANEL_ROW3, LOW);
-      digitalWrite(PANEL_ROW4, LOW);
-      digitalWrite(PANEL_ROW5, LOW);
-      digitalWrite(PANEL_ROW6, LOW);
-      digitalWrite(PANEL_ROW7, LOW);
-      digitalWrite(PANEL_DRIVE, LOW);
+      write_panel(0b00000000, 0b00000001);
       break;
    case 17:
       panel_write_idx = 0;
       break;
   }
+}
+
+void write_panel(byte address, byte data) {
+  digitalWrite(PANEL_DRIVE, HIGH);
+  
+  for (byte i = 0; i < 4; i++) {
+    byte on = (address >> i) & 1;
+    digitalWrite(PANEL_COLA - i, on == 1 ? HIGH : LOW);
+  }
+  
+  for (byte i = 0; i < 8; i++) {
+    byte on = (data >> i) & 1;
+    digitalWrite(PANEL_ROW0 + i, on == 1 ? HIGH : LOW);
+  }
+  digitalWrite(PANEL_DRIVE, LOW);
 }
