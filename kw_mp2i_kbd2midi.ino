@@ -82,7 +82,7 @@ void setup() {
   */
 
   // Panel
-  for (int i = PANEL_ROW1; i <= PANEL_SENSE; i++) {
+  for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
     pinMode(i, OUTPUT);
     digitalWrite(i, LOW);
   }
@@ -136,6 +136,7 @@ byte notes_playing[128];
 byte half_tones[] = {0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1};
 byte pedal_read_idx = 0;
 byte pedals_state[3];
+byte panel_write_idx = 0;
 
 void loop() {
 
@@ -299,4 +300,75 @@ void loop() {
     }
   }
   pedal_read_idx = pedal_read_idx == 2 ? 0 : pedal_read_idx + 1;
+
+  // Panel
+  if (panel_write_idx % 4 == 0) {
+    for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
+      digitalWrite(i, HIGH);
+    }
+  }
+  panel_write_idx++;
+  switch(panel_write_idx) {
+   case 1:
+      digitalWrite(PANEL_DRIVE, HIGH);
+      digitalWrite(PANEL_COLD, LOW);
+      digitalWrite(PANEL_ROW0, HIGH);
+      digitalWrite(PANEL_ROW1, LOW);
+      digitalWrite(PANEL_ROW2, LOW);
+      digitalWrite(PANEL_ROW3, HIGH);
+      digitalWrite(PANEL_ROW4, LOW);
+      digitalWrite(PANEL_ROW5, LOW);
+      digitalWrite(PANEL_ROW6, LOW);
+      digitalWrite(PANEL_ROW7, LOW);
+      digitalWrite(PANEL_DRIVE, LOW);
+      break;
+   case 5:
+      digitalWrite(PANEL_DRIVE, HIGH);
+      digitalWrite(PANEL_COLA, LOW);
+      digitalWrite(PANEL_COLB, LOW);
+      digitalWrite(PANEL_COLC, LOW);
+      digitalWrite(PANEL_ROW0, LOW);
+      digitalWrite(PANEL_ROW1, LOW);
+      digitalWrite(PANEL_ROW2, LOW);
+      digitalWrite(PANEL_ROW3, LOW);
+      digitalWrite(PANEL_ROW4, LOW);
+      digitalWrite(PANEL_ROW5, LOW);
+      digitalWrite(PANEL_ROW6, HIGH);
+      digitalWrite(PANEL_ROW7, LOW);
+      digitalWrite(PANEL_DRIVE, LOW);
+      break;
+   case 9:
+      digitalWrite(PANEL_DRIVE, HIGH);
+      digitalWrite(PANEL_COLB, LOW);
+      digitalWrite(PANEL_COLC, LOW);
+      digitalWrite(PANEL_ROW0, HIGH);
+      digitalWrite(PANEL_ROW1, HIGH);
+      digitalWrite(PANEL_ROW2, HIGH);
+      digitalWrite(PANEL_ROW3, HIGH);
+      digitalWrite(PANEL_ROW4, LOW);
+      digitalWrite(PANEL_ROW5, LOW);
+      digitalWrite(PANEL_ROW6, LOW);
+      digitalWrite(PANEL_ROW7, LOW);
+      digitalWrite(PANEL_DRIVE, LOW);
+      break;
+   case 13:
+      digitalWrite(PANEL_DRIVE, HIGH);
+      digitalWrite(PANEL_COLA, LOW);
+      digitalWrite(PANEL_COLB, LOW);
+      digitalWrite(PANEL_COLC, LOW);
+      digitalWrite(PANEL_COLD, LOW);
+      digitalWrite(PANEL_ROW0, HIGH);
+      digitalWrite(PANEL_ROW1, LOW);
+      digitalWrite(PANEL_ROW2, LOW);
+      digitalWrite(PANEL_ROW3, LOW);
+      digitalWrite(PANEL_ROW4, LOW);
+      digitalWrite(PANEL_ROW5, LOW);
+      digitalWrite(PANEL_ROW6, LOW);
+      digitalWrite(PANEL_ROW7, LOW);
+      digitalWrite(PANEL_DRIVE, LOW);
+      break;
+   case 17:
+      panel_write_idx = 0;
+      break;
+  }
 }
