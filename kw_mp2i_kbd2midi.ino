@@ -139,6 +139,7 @@ byte pedals_state[3];
 byte panel_write_idx = 0;
 
 void loop() {
+  int seconds = millis() / 1000;
 
   for (int i = 0; i <= 5; i++) {
     byte line_press_started = 3 + (2 * i);
@@ -302,26 +303,46 @@ void loop() {
   pedal_read_idx = pedal_read_idx == 2 ? 0 : pedal_read_idx + 1;
 
   // Panel
-  if (panel_write_idx % 4 == 0) {
+  if (panel_write_idx % 3 == 0) {
     for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
       digitalWrite(i, HIGH);
     }
   }
   panel_write_idx++;
   switch(panel_write_idx) {
-   case 1:
-      write_panel(0b1101, 0b00001001);
+    case 1:
+      if ((seconds % 11) > 9 && (seconds % 17) > 15) {
+        // Wink both
+        write_panel(0b1101, 0b00000110);
+      } else if ((seconds % 11) > 9) {
+        // Wink left
+        write_panel(0b1101, 0b00000101);
+      } else if ((seconds % 17) > 15) {
+        // Wink right
+        write_panel(0b1101, 0b00001010);
+      } else {
+        // Eyes
+        write_panel(0b1101, 0b00001001);
+      }
       break;
-   case 5:
+    case 4:
       write_panel(0b0010, 0b01000000);
       break;
-   case 9:
-      write_panel(0b0011, 0b00001111);
+    case 7:
+      if ((seconds % 23) > 20) {
+        // Tounge right
+        write_panel(0b0011, 0b01110011);
+      } else {
+        // Smile
+        write_panel(0b0011, 0b00001111);
+      }
       break;
-   case 13:
+    case 10:
       write_panel(0b0000, 0b00000001);
       break;
-   case 17:
+    case 13:
+      break;
+    case 16:
       panel_write_idx = 0;
       break;
   }
