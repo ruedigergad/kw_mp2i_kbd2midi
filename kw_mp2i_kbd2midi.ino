@@ -307,9 +307,11 @@ void loop() {
   pedal_read_idx = pedal_read_idx == 2 ? 0 : pedal_read_idx + 1;
 
   // Panel
-  for (byte i = 0; i < 128; i++) {
-    if (notes_playing[i] != 0) {
-      time_last_note_played = seconds;
+  if ((seconds % 2) == 0) {
+    for (byte i = 0; i < 128; i++) {
+      if (notes_playing[i] != 0) {
+        time_last_note_played = seconds;
+      }
     }
   }
 
