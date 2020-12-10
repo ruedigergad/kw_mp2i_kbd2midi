@@ -137,7 +137,9 @@ byte half_tones[] = {0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1};
 byte pedal_read_idx = 0;
 byte pedals_state[3];
 byte panel_write_idx = 0;
+
 unsigned long time_last_note_played = 0;
+unsigned long time_first_note_played = 0;
 unsigned long seconds = 0;
 
 void loop() {
@@ -304,22 +306,25 @@ void loop() {
   }
   pedal_read_idx = pedal_read_idx == 2 ? 0 : pedal_read_idx + 1;
 
+  // Panel
   for (byte i = 0; i < 128; i++) {
     if (notes_playing[i] != 0) {
-      time_last_note_played = millis()/1000;
+      time_last_note_played = seconds;
     }
   }
 
   if ((seconds - time_last_note_played) < 60) {
+    if (time_first_note_played == 0) time_first_note_played = seconds;
+    
     display_playing_panel();
   } else {
+    time_first_note_played = 0;
+    
     display_idle_panel();
   }
 }
 
-
 void display_playing_panel() {
-    // Panel
   if (panel_write_idx % 3 == 0) {
     for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
       digitalWrite(i, HIGH);
@@ -327,26 +332,51 @@ void display_playing_panel() {
   }
   panel_write_idx++;
 
-  switch(panel_write_idx) {
-    case 1:
-      // Eyes
-      write_panel(0b1101, 0b00001001);
-      break;
-    case 4:
-      write_panel(0b0010, 0b01000000);
-      break;
-    case 7:
-      // Smile
-      write_panel(0b0011, 0b00001111);
-      break;
-    case 10:
-      write_panel(0b0000, 0b00000001);
-      break;
-    case 13:
-      break;
-    case 16:
-      panel_write_idx = 0;
-      break;
+  if ((seconds - time_first_note_played) < 10) {
+    switch(panel_write_idx) {
+      case 1:
+        // G
+        write_panel(0b1101, 0b00111101);
+        break;
+      case 4:
+        // o
+        write_panel(0b0010, 0b01011100);
+        break;
+      case 7:
+        // !
+        write_panel(0b0011, 0b10000110);
+        break;
+      case 10:
+        write_panel(0b0000, 0b00000001);
+        break;
+      case 13:
+        break;
+      case 16:
+        panel_write_idx = 0;
+        break;
+    }
+  } else {
+    switch(panel_write_idx) {
+      case 1:
+        // Eyes
+        write_panel(0b1101, 0b00001001);
+        break;
+      case 4:
+        write_panel(0b0010, 0b01000000);
+        break;
+      case 7:
+        // Smile
+        write_panel(0b0011, 0b00001111);
+        break;
+      case 10:
+        write_panel(0b0000, 0b00000001);
+        break;
+      case 13:
+        break;
+      case 16:
+        panel_write_idx = 0;
+        break;
+    }
   }
 }
 
