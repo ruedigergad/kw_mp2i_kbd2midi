@@ -310,16 +310,16 @@ void loop() {
   panel_write_idx++;
   switch(panel_write_idx) {
    case 1:
-      write_panel(0b00001101, 0b00001001);
+      write_panel(0b1101, 0b00001001);
       break;
    case 5:
-      write_panel(0b00000010, 0b01000000);
+      write_panel(0b0010, 0b01000000);
       break;
    case 9:
-      write_panel(0b00000011, 0b00001111);
+      write_panel(0b0011, 0b00001111);
       break;
    case 13:
-      write_panel(0b00000000, 0b00000001);
+      write_panel(0b0000, 0b00000001);
       break;
    case 17:
       panel_write_idx = 0;
