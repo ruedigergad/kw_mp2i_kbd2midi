@@ -73,13 +73,13 @@ void setup() {
 
   // Pedals
   pinMode(PEDAL_REF, OUTPUT);
-  digitalWrite(PEDAL_REF, HIGH);
-  /*
+  digitalWrite(PEDAL_REF, LOW);
+  
   for (int i = 0; i <= 2; i++) {
-    pinMode(pedals[i], OUTPUT);
-    digitalWrite(pedals[i], HIGH);
+    pinMode(pedals[i], INPUT_PULLUP);
+    //digitalWrite(pedals[i], HIGH);
   }
-  */
+  
 
   // Panel
   for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
@@ -290,10 +290,10 @@ void loop() {
   }
 
   // Pedals
-  int raw = analogRead(pedals[pedal_read_idx]);
+  int raw = !digitalRead(pedals[pedal_read_idx]);
   
   int x = pedal_read_idx < 2 ? 0 : 1;
-  if (raw > 1020) {
+  if (raw) {
     if (pedals_state[pedal_read_idx] == 0) {
       MIDI.sendControlChange((67 - pedal_read_idx) - x, 127, 1);
       pedals_state[pedal_read_idx] = 1;
