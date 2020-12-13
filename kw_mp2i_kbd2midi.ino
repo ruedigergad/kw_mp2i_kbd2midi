@@ -108,49 +108,6 @@ void setup() {
     pinMode(i, OUTPUT);
     digitalWrite(i, LOW);
   }
-  //digitalWrite(PANEL_DRIVE, HIGH);
-  //digitalWrite(PANEL_COLA, HIGH);
-  //digitalWrite(PANEL_COLB, HIGH);
-  //digitalWrite(PANEL_COLC, HIGH);
-  //digitalWrite(PANEL_COLD, HIGH);
-  //digitalWrite(PANEL_ROW0, HIGH);
-  //digitalWrite(PANEL_ROW1, HIGH);
-  //digitalWrite(PANEL_ROW2, HIGH);
-  //digitalWrite(PANEL_ROW3, HIGH);
-  //digitalWrite(PANEL_ROW4, HIGH);
-  //digitalWrite(PANEL_ROW5, HIGH);
-  //digitalWrite(PANEL_ROW6, HIGH);
-  //digitalWrite(PANEL_ROW7, HIGH);
-  //digitalWrite(PANEL_DRIVE, HIGH);
-  //digitalWrite(PANEL_DRIVE, LOW);
-  
-  //digitalWrite(PANEL_COLA, LOW);
-  //digitalWrite(PANEL_COLB, LOW);
-  //digitalWrite(PANEL_COLC, LOW);
-  //digitalWrite(PANEL_COLD, LOW);
-  //digitalWrite(PANEL_ROW1, LOW);
-  //digitalWrite(PANEL_ROW2, LOW);
-  
-  //digitalWrite(PANEL_COLB, HIGH);
-  //digitalWrite(PANEL_COLC, HIGH);
-  //digitalWrite(PANEL_COLD, HIGH);
-  //digitalWrite(PANEL_ROW0, HIGH);
-  //digitalWrite(PANEL_ROW1, HIGH);
-  //digitalWrite(PANEL_ROW2, HIGH);
-
-  //digitalWrite(PANEL_COLA, HIGH);
-  //digitalWrite(PANEL_COLB, HIGH);
-  //digitalWrite(PANEL_COLC, HIGH);
-  //digitalWrite(PANEL_COLD, HIGH);
-  //digitalWrite(PANEL_ROW0, HIGH);
-  //digitalWrite(PANEL_ROW1, HIGH);
-  //digitalWrite(PANEL_ROW2, HIGH);
-  //digitalWrite(PANEL_ROW3, HIGH);
-  //digitalWrite(PANEL_ROW4, HIGH);
-  //digitalWrite(PANEL_ROW5, HIGH);
-  //digitalWrite(PANEL_ROW6, HIGH);
-  //digitalWrite(PANEL_ROW7, HIGH);
-  //digitalWrite(PANEL_DRIVE, HIGH);
 }
 
 unsigned long notes_pre_press[128];
