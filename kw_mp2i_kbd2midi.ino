@@ -20,6 +20,9 @@
  * SOFTWARE.
  */
 
+// Use the following MIDI Library:
+// https://github.com/FortySevenEffects/arduino_midi_library
+// Tested with library version: 4.3.1
 #include <MIDI.h>
 
 #define PANEL_SENSE 53
