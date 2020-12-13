@@ -362,7 +362,6 @@ void display_playing_panel() {
 }
 
 void display_idle_panel() {
-    // Panel
   if (panel_write_idx % 3 == 0) {
     for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
       digitalWrite(i, HIGH);
