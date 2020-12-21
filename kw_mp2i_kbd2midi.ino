@@ -20,6 +20,8 @@
  * SOFTWARE.
  */
 
+// This is used with an Arduino Mega 2560.
+
 // Use the following MIDI Library:
 // https://github.com/FortySevenEffects/arduino_midi_library
 // Tested with library version: 4.3.1
