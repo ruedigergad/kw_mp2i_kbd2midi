@@ -497,5 +497,6 @@ void write_panel(byte address, byte data) {
     byte on = (data >> i) & 1;
     digitalWrite(PANEL_ROW0 + i, on == 1 ? HIGH : LOW);
   }
+  
   digitalWrite(PANEL_DRIVE, LOW);
 }
