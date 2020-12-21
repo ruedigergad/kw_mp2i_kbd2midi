@@ -98,7 +98,7 @@ void setup() {
    * Comparing to the Mark Pro TWOi Service Manual, p.57 "Scanner Board 38869 Interface",
    * these are the pins:
    * Flat Ribbon Cable    Arduino
-   * Bass       Treble    IO Port
+   * Bass       Treble    I/O Port
    * MK0    =   MK5    =  2
    * BR0    =   BR5    =  3
    * MK1    =   MK6    =  4
@@ -117,11 +117,42 @@ void setup() {
     digitalWrite(i, HIGH);
   }
 
-  // Left "half" of keyboard (Bass).
+  /*
+   * Left "half" of keyboard (Bass).
+   * 
+   * Comparing to the Mark Pro TWOi Service Manual, p.57 "Scanner Board 38869 Interface",
+   * these are the pins:
+   * Flat Ribbon      Arduino
+   * Cable Bass       I/O Port
+   * BASS0/T0       = 22
+   * BASS1/T1       = 24
+   * BASS2/T2       = 26
+   * BASS3/T3       = 28
+   * BASS4/T4       = 30
+   * BASS5/T5       = 32
+   * BASS6/T6       = 34
+   * BASS7/T7       = 36
+   */
   for (int i = 22; i <= 36; i += 2) {
     pinMode(i, INPUT_PULLUP);
   }
-  // Left "Right" of keyboard (Treble).
+
+  /*
+   * Right "half" of keyboard (Treble).
+   * 
+   * Comparing to the Mark Pro TWOi Service Manual, p.57 "Scanner Board 38869 Interface",
+   * these are the pins:
+   * Flat Ribbon      Arduino
+   * Cable Treble     I/O Port
+   * PORT50/T0      = 23
+   * PORT51/T1      = 25
+   * PORT52/T2      = 27
+   * PORT53/T3      = 29
+   * PORT54/T4      = 31
+   * PORT55/T5      = 33
+   * PORT56/T6      = 35
+   * PORT57/T7      = 37
+   */
   for (int i = 23; i <= 37; i += 2) {
     pinMode(i, INPUT_PULLUP);
   }
