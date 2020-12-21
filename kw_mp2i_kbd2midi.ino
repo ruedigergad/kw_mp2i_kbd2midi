@@ -94,6 +94,24 @@ void setup() {
   pinMode(NOT_MUTE, OUTPUT);
   digitalWrite(NOT_MUTE, HIGH);
 
+  /*
+   * Comparing to the Mark Pro TWOi Service Manual, p.57 "Scanner Board 38869 Interface",
+   * these are the pins:
+   * Flat Ribbon Cable    Arduino
+   * Bass       Treble    IO Port
+   * MK0    =   MK5    =  2
+   * BR0    =   BR5    =  3
+   * MK1    =   MK6    =  4
+   * BR1    =   BR6    =  5
+   * MK2    =   MK7    =  6
+   * BR2    =   BR7    =  7
+   * MK3    =   MK8    =  8
+   * BR3    =   BR8    =  9
+   * MK4    =   MK9    =  10
+   * BR4    =   BR9    =  11
+   *            MK10   =  12
+   *            BR10   =  13
+   */
   for (int i = 2; i <= 13; i++) {
     pinMode(i, OUTPUT);
     digitalWrite(i, HIGH);
