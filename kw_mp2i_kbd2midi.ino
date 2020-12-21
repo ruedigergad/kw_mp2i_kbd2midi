@@ -22,10 +22,14 @@
 
 // This is used with an Arduino Mega 2560.
 
+#define PRINT false
+
+#ifndef PRINT
 // Use the following MIDI Library:
 // https://github.com/FortySevenEffects/arduino_midi_library
 // Tested with library version: 4.3.1
 #include <MIDI.h>
+#endif
 
 #define PANEL_SENSE 53
 #define PANEL_DRIVE 52
@@ -44,10 +48,10 @@
 
 #define PEDAL_REF A13
 #define NOT_MUTE A14
-#define PRINT false
 #define NOTE_OFFSET 20
 #define NOTE_OFFSET_TREBLE 60
 
+#ifndef PRINT
 /*
 struct MySettings : public midi::DefaultSettings
 {
@@ -60,6 +64,7 @@ struct MySettings : public midi::DefaultSettings
 //MIDI_CREATE_CUSTOM_INSTANCE(HardwareSerial, Serial3, MIDI, MySettings);
 //MIDI_CREATE_INSTANCE(HardwareSerial, Serial3, MIDI);
 MIDI_CREATE_DEFAULT_INSTANCE();
+#endif
 
 /*
  * Due to problems with the MIDI connection, we use Serial to MIDI, for now:
@@ -72,12 +77,12 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 int pedals[] = {A0, A4, A8};
 
 void setup() {
-  if (! PRINT) {
-    MIDI.begin(MIDI_CHANNEL_OMNI);
-    Serial.begin(115200);
-  } else {
-    Serial.begin(9600);
-  }
+#ifndef PRINT
+  MIDI.begin(MIDI_CHANNEL_OMNI);
+  Serial.begin(115200);
+#else
+  Serial.begin(9600);
+#endif
   
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -204,20 +209,22 @@ void loop() {
             } else {
               velocity = 127;
             }
-            
-            if (! PRINT && velocity > 0) {
+
+            if (velocity > 0) {
+#ifndef PRINT
               MIDI.sendNoteOn(note_value, velocity, 1);
+#endif
               notes_playing[note_value] = velocity;
             }
           }
         } else {
           if (notes_playing[note_value] != 0) {
-            if (! PRINT) {
-              byte velocity = notes_playing[note_value];
-              MIDI.sendNoteOff(note_value, velocity, 1);
-              notes_playing[note_value] = 0;
-              notes_pre_press[note_value] = 0;
-            }
+            byte velocity = notes_playing[note_value];
+#ifndef PRINT
+            MIDI.sendNoteOff(note_value, velocity, 1);
+#endif
+            notes_playing[note_value] = 0;
+            notes_pre_press[note_value] = 0;
           }
         }
       }
@@ -254,18 +261,20 @@ void loop() {
           }
           
           if (! PRINT && velocity > 0) {
+#ifndef PRINT
             MIDI.sendNoteOn(note_value, velocity, 1);
+#endif
             notes_playing[note_value] = velocity;
           }
         }
       } else {
         if (notes_playing[note_value] != 0) {
-          if (! PRINT) {
-            byte velocity = notes_playing[note_value];
-            MIDI.sendNoteOff(note_value, velocity, 1);
-            notes_playing[note_value] = 0;
-            notes_pre_press[note_value] = 0;
-          }
+          byte velocity = notes_playing[note_value];
+#ifndef PRINT
+          MIDI.sendNoteOff(note_value, velocity, 1);
+#endif
+          notes_playing[note_value] = 0;
+          notes_pre_press[note_value] = 0;
         }
       }
     }
@@ -279,12 +288,16 @@ void loop() {
   int x = pedal_read_idx < 2 ? 0 : 1;
   if (raw) {
     if (pedals_state[pedal_read_idx] == 0) {
+#ifndef PRINT
       MIDI.sendControlChange((67 - pedal_read_idx) - x, 127, 1);
+#endif
       pedals_state[pedal_read_idx] = 1;
     }
   } else {
     if (pedals_state[pedal_read_idx] != 0) {
+#ifndef PRINT
       MIDI.sendControlChange((67 - pedal_read_idx) - x, 0, 1);
+#endif
       pedals_state[pedal_read_idx] = 0;
     }
   }
