@@ -46,8 +46,13 @@
 #define PANEL_ROW1 41
 #define PANEL_ROW0 40
 
-#define PEDAL_REF A13
+#define PEDAL_IO_SUSTAIN A0
+#define PEDAL_IO_SOSTENUTO A4
+#define PEDAL_IO_SOFT A8
+#define PEDAL_IO_REF A13
+
 #define NOT_MUTE A14
+
 #define NOTE_OFFSET 20
 #define NOTE_OFFSET_TREBLE 60
 
@@ -74,7 +79,7 @@ MIDI_CREATE_DEFAULT_INSTANCE();
  * aconnect 131:0 128:0
  */
 
-int pedals[] = {A0, A4, A8};
+int pedals[] = {PEDAL_IO_SUSTAIN, PEDAL_IO_SOSTENUTO, PEDAL_IO_SOFT};
 
 void setup() {
 #if not PRINT
@@ -104,8 +109,8 @@ void setup() {
   }
 
   // Pedals
-  pinMode(PEDAL_REF, OUTPUT);
-  digitalWrite(PEDAL_REF, LOW);
+  pinMode(PEDAL_IO_REF, OUTPUT);
+  digitalWrite(PEDAL_IO_REF, LOW);
   
   for (int i = 0; i <= 2; i++) {
     pinMode(pedals[i], INPUT_PULLUP);
