@@ -24,7 +24,7 @@
 
 #define PRINT false
 
-#ifndef PRINT
+#if not PRINT
 // Use the following MIDI Library:
 // https://github.com/FortySevenEffects/arduino_midi_library
 // Tested with library version: 4.3.1
@@ -51,7 +51,7 @@
 #define NOTE_OFFSET 20
 #define NOTE_OFFSET_TREBLE 60
 
-#ifndef PRINT
+#if not PRINT
 /*
 struct MySettings : public midi::DefaultSettings
 {
@@ -77,10 +77,10 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 int pedals[] = {A0, A4, A8};
 
 void setup() {
-#ifndef PRINT
+#if not PRINT
   MIDI.begin(MIDI_CHANNEL_OMNI);
   Serial.begin(115200);
-#else
+#else/
   Serial.begin(9600);
 #endif
   
@@ -211,7 +211,7 @@ void loop() {
             }
 
             if (velocity > 0) {
-#ifndef PRINT
+#if not PRINT
               MIDI.sendNoteOn(note_value, velocity, 1);
 #endif
               notes_playing[note_value] = velocity;
@@ -220,7 +220,7 @@ void loop() {
         } else {
           if (notes_playing[note_value] != 0) {
             byte velocity = notes_playing[note_value];
-#ifndef PRINT
+#if not PRINT
             MIDI.sendNoteOff(note_value, velocity, 1);
 #endif
             notes_playing[note_value] = 0;
@@ -261,7 +261,7 @@ void loop() {
           }
           
           if (! PRINT && velocity > 0) {
-#ifndef PRINT
+#if not PRINT
             MIDI.sendNoteOn(note_value, velocity, 1);
 #endif
             notes_playing[note_value] = velocity;
@@ -270,7 +270,7 @@ void loop() {
       } else {
         if (notes_playing[note_value] != 0) {
           byte velocity = notes_playing[note_value];
-#ifndef PRINT
+#if not PRINT
           MIDI.sendNoteOff(note_value, velocity, 1);
 #endif
           notes_playing[note_value] = 0;
@@ -288,14 +288,14 @@ void loop() {
   int x = pedal_read_idx < 2 ? 0 : 1;
   if (raw) {
     if (pedals_state[pedal_read_idx] == 0) {
-#ifndef PRINT
+#if not PRINT
       MIDI.sendControlChange((67 - pedal_read_idx) - x, 127, 1);
 #endif
       pedals_state[pedal_read_idx] = 1;
     }
   } else {
     if (pedals_state[pedal_read_idx] != 0) {
-#ifndef PRINT
+#if not PRINT
       MIDI.sendControlChange((67 - pedal_read_idx) - x, 0, 1);
 #endif
       pedals_state[pedal_read_idx] = 0;
