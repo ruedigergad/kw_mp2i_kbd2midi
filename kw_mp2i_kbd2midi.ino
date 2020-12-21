@@ -476,7 +476,7 @@ void display_idle_panel() {
       chasing_light_offset = (millis()/100) % 8;
       // Right upper row
       //write_panel(0b1001, 1 << chasing_light_offset);
-      // Left upper row
+      // Right lower row
       write_panel(0b0100, 1 << chasing_light_offset);
       break;
     case 16:
