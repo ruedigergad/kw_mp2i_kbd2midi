@@ -473,13 +473,43 @@ void display_idle_panel() {
       write_panel(0b0000, 0b00000001);
       break;
     case 13:
-      chasing_light_offset = (millis()/100) % 8;
       // Right upper row
       //write_panel(0b1001, 1 << chasing_light_offset);
+      
       // Right lower row
-      write_panel(0b0100, 1 << chasing_light_offset);
+      switch ((seconds / 30) % 4) {
+        case 0:
+          chasing_light_offset = (millis()/100) % 8;
+          write_panel(0b0100, 1 << chasing_light_offset);
+          break;
+        case 1:
+          chasing_light_offset = (millis()/100) % 8;
+          write_panel(0b0100, 0b10000000 >> chasing_light_offset);
+          break;
+        // First half of animation with two dots.
+        case 2:
+          chasing_light_offset = (millis()/150) % 4;
+          write_panel(0b0100, 1 << chasing_light_offset);
+          break;
+        case 3:
+          chasing_light_offset = (millis()/150) % 4;
+          write_panel(0b0100, 0b00001000 >> chasing_light_offset);
+          break;
+      }
       break;
     case 16:
+      // Second half of animation with two dots.
+      switch ((seconds / 30) % 4) {
+        case 2:
+          chasing_light_offset = (millis()/150) % 4;
+          write_panel(0b0100, 0b10000000 >> chasing_light_offset);
+          break;
+        case 3:
+          chasing_light_offset = (millis()/150) % 4;
+          write_panel(0b0100, 0b00010000 << chasing_light_offset);
+          break;
+      }
+
       panel_write_idx = 0;
       break;
   }
