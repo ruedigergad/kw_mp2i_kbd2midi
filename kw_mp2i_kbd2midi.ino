@@ -58,6 +58,11 @@
 
 #if not PRINT
 /*
+ * Keeping some leftovers of some experiments regarding different MIDI
+ * configurations here. In the end, using "proper" MIDI did not work, so far.
+ * Serial to MIDI is used as fallback solution. See also MIDI/Serial.begin below.
+ */
+/*
 struct MySettings : public midi::DefaultSettings
 {
    static const uint16_t SenderActiveSensingPeriodicity = 0;
@@ -71,6 +76,11 @@ struct MySettings : public midi::DefaultSettings
 MIDI_CREATE_DEFAULT_INSTANCE();
 #endif
 
+int pedals[] = {PEDAL_IO_SUSTAIN, PEDAL_IO_SOSTENUTO, PEDAL_IO_SOFT};
+
+void setup() {
+#if not PRINT
+  MIDI.begin(MIDI_CHANNEL_OMNI);
 /*
  * Due to problems with the MIDI connection, we use Serial to MIDI, for now:
  * https://github.com/cjbarnes18/ttymidi
@@ -78,12 +88,6 @@ MIDI_CREATE_DEFAULT_INSTANCE();
  * ./ttymidi -s /dev/ttyACM1 -v
  * aconnect 131:0 128:0
  */
-
-int pedals[] = {PEDAL_IO_SUSTAIN, PEDAL_IO_SOSTENUTO, PEDAL_IO_SOFT};
-
-void setup() {
-#if not PRINT
-  MIDI.begin(MIDI_CHANNEL_OMNI);
   Serial.begin(115200);
 #else/
   Serial.begin(9600);
