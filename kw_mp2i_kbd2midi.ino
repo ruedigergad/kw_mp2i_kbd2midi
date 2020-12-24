@@ -31,27 +31,27 @@
 #include <MIDI.h>
 #endif
 
-#define PANEL_SENSE 53
-#define PANEL_DRIVE 52
-#define PANEL_COLA 51
-#define PANEL_COLD 50
-#define PANEL_COLC 49
-#define PANEL_COLB 48
-#define PANEL_ROW7 47
-#define PANEL_ROW6 46
-#define PANEL_ROW5 45
-#define PANEL_ROW4 44
-#define PANEL_ROW3 43
-#define PANEL_ROW2 42
-#define PANEL_ROW1 41
-#define PANEL_ROW0 40
+#define IO_PANEL_SENSE 53
+#define IO_PANEL_DRIVE 52
+#define IO_PANEL_COLA 51
+#define IO_PANEL_COLD 50
+#define IO_PANEL_COLC 49
+#define IO_PANEL_COLB 48
+#define IO_PANEL_ROW7 47
+#define IO_PANEL_ROW6 46
+#define IO_PANEL_ROW5 45
+#define IO_PANEL_ROW4 44
+#define IO_PANEL_ROW3 43
+#define IO_PANEL_ROW2 42
+#define IO_PANEL_ROW1 41
+#define IO_PANEL_ROW0 40
 
-#define PEDAL_IO_SUSTAIN A0
-#define PEDAL_IO_SOSTENUTO A4
-#define PEDAL_IO_SOFT A8
-#define PEDAL_IO_REF A13
+#define IO_PEDAL_SUSTAIN A0
+#define IO_PEDAL_SOSTENUTO A4
+#define IO_PEDAL_SOFT A8
+#define IO_PEDAL_REF A13
 
-#define NOT_MUTE A14
+#define IO_NOT_MUTE A14
 
 #define NOTE_OFFSET 20
 #define NOTE_OFFSET_TREBLE 60
@@ -76,7 +76,7 @@ struct MySettings : public midi::DefaultSettings
 MIDI_CREATE_DEFAULT_INSTANCE();
 #endif
 
-int pedals[] = {PEDAL_IO_SUSTAIN, PEDAL_IO_SOSTENUTO, PEDAL_IO_SOFT};
+int pedals[] = {IO_PEDAL_SUSTAIN, IO_PEDAL_SOSTENUTO, IO_PEDAL_SOFT};
 
 void setup() {
 #if not PRINT
@@ -95,8 +95,8 @@ void setup() {
   
   pinMode(LED_BUILTIN, OUTPUT);
 
-  pinMode(NOT_MUTE, OUTPUT);
-  digitalWrite(NOT_MUTE, HIGH);
+  pinMode(IO_NOT_MUTE, OUTPUT);
+  digitalWrite(IO_NOT_MUTE, HIGH);
 
   /*
    * Comparing to the Mark Pro TWOi Service Manual, p.57 "Scanner Board 38869 Interface",
@@ -162,8 +162,8 @@ void setup() {
   }
 
   // Pedals
-  pinMode(PEDAL_IO_REF, OUTPUT);
-  digitalWrite(PEDAL_IO_REF, LOW);
+  pinMode(IO_PEDAL_REF, OUTPUT);
+  digitalWrite(IO_PEDAL_REF, LOW);
   
   for (int i = 0; i <= 2; i++) {
     pinMode(pedals[i], INPUT_PULLUP);
@@ -172,7 +172,7 @@ void setup() {
   
 
   // Panel
-  for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
+  for (int i = IO_PANEL_ROW0; i <= IO_PANEL_SENSE; i++) {
     pinMode(i, OUTPUT);
     digitalWrite(i, LOW);
   }
@@ -383,7 +383,7 @@ void loop() {
 
 void display_playing_panel() {
   if (panel_write_idx % 3 == 0) {
-    for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
+    for (int i = IO_PANEL_ROW0; i <= IO_PANEL_SENSE; i++) {
       digitalWrite(i, HIGH);
     }
   }
@@ -439,7 +439,7 @@ void display_playing_panel() {
 
 void display_idle_panel() {
   if (panel_write_idx % 3 == 0) {
-    for (int i = PANEL_ROW0; i <= PANEL_SENSE; i++) {
+    for (int i = IO_PANEL_ROW0; i <= IO_PANEL_SENSE; i++) {
       digitalWrite(i, HIGH);
     }
   }
@@ -520,17 +520,17 @@ void display_idle_panel() {
 }
 
 void write_panel(byte address, byte data) {
-  digitalWrite(PANEL_DRIVE, HIGH);
+  digitalWrite(IO_PANEL_DRIVE, HIGH);
   
   for (byte i = 0; i < 4; i++) {
     byte on = (address >> i) & 1;
-    digitalWrite(PANEL_COLA - i, on == 1 ? HIGH : LOW);
+    digitalWrite(IO_PANEL_COLA - i, on == 1 ? HIGH : LOW);
   }
   
   for (byte i = 0; i < 8; i++) {
     byte on = (data >> i) & 1;
-    digitalWrite(PANEL_ROW0 + i, on == 1 ? HIGH : LOW);
+    digitalWrite(IO_PANEL_ROW0 + i, on == 1 ? HIGH : LOW);
   }
   
-  digitalWrite(PANEL_DRIVE, LOW);
+  digitalWrite(IO_PANEL_DRIVE, LOW);
 }
