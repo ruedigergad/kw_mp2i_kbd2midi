@@ -16,11 +16,11 @@ The audio signals are send back to the amplifier board in the piano.
 
 I added some pictures in the repository that show some of the work progress.
 
-![Disassembled Keyboard](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_disassembled.jpg?raw=true)
+![Disassembled Keyboard](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_disassembled_scaled.jpg?raw=true)
 
-![Keyboard Internals Controller Replacement](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_internals_replaced_controller.jpg?raw=true)
+![Keyboard Internals Controller Replacement](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_internals_replaced_controller_scaled.jpg?raw=true)
 
-![Keyboard Internals Controller Replacement Close-up](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_internals_replaced_controller_2.jpg?raw=true)
+![Keyboard Internals Controller Replacement Close-up](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_internals_replaced_controller_2_scaled.jpg?raw=true)
 
 
 In addition, the Arduino controller also displays some output on the keyboard panel.
