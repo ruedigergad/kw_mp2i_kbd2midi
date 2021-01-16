@@ -7,7 +7,7 @@ The Engine Board is, e.g., responsible for generating the sound based on the key
 
 As "plan B repair attempt", I decided to give it a try to replace the control logic and audio generation.
 As control logic replacement, I use an Arduino Mega 2560.
-This repository contains the code for the Arduino controller.
+This repository contains the code for the Arduino controller in [https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/kw_mp2i_kbd2midi.ino](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/kw_mp2i_kbd2midi.ino).
 For the audio generation, I use a Linux-based computer with QSynth.
 
 The Arduino controller reads the keyboard keys and pedals and generated MIDI messages based on the presses etc.
