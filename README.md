@@ -16,9 +16,17 @@ The audio signals are send back to the amplifier board in the piano.
 
 I added some pictures in the repository that show some of the work progress.
 
+![Disassembled Keyboard](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_disassembled.jpg?raw=true)
+
+![Keyboard Internals Controller Replacement](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_internals_replaced_controller.jpg?raw=true)
+
+![Keyboard Internals Controller Replacement Close-up](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_internals_replaced_controller_2.jpg?raw=true)
+
+
 In addition, the Arduino controller also displays some output on the keyboard panel.
 However, the displayed output is rather a toy example, at least for now.
 
 I added a video in the repository that shows the keyboard panel in idle mode.
 While playing, no "animation" is shown to avoid distracting the player.
 
+![Keyboard Panel Idle Animation](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/keyboard_panel_idle.gif?raw=true)
