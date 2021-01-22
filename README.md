@@ -10,7 +10,7 @@ As control logic replacement, I use an Arduino Mega 2560.
 This repository contains the code for the Arduino controller in [https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/kw_mp2i_kbd2midi.ino](https://github.com/ruedigergad/kw_mp2i_kbd2midi/blob/main/kw_mp2i_kbd2midi.ino).
 For the audio generation, I use a Linux-based computer with QSynth.
 
-The Arduino controller reads the keyboard keys and pedals and generated MIDI messages based on the presses etc.
+The Arduino controller reads the keyboard keys and pedals and generates MIDI messages based on the presses etc.
 The Linux computer receives the generated MIDI messages and generates audio via QSynth.
 The audio signals are send back to the amplifier board in the piano.
 
