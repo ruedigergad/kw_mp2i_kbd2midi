@@ -89,7 +89,7 @@ void setup() {
  * aconnect 131:0 128:0
  */
   Serial.begin(115200);
-#else/
+#else
   Serial.begin(9600);
 #endif
   
