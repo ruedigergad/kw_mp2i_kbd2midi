@@ -1,4 +1,8 @@
 
+Note: this should go without saying but just in case, before going on, please be aware that this is not intended as a guide.
+Working with electrical equipment can be dangerous to you and your environment.
+If you try to do anything of this you do this on your own responsibility and at your own risk!
+
 Some time ago, I bought a used, partially out of order, Kurzweil Mark Pro TWOi digital/electrical piano.
 After trying some repair attempts, it looked like the problems could not be repaired.
 
